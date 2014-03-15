@@ -16,8 +16,7 @@ import dawnwords.game2048.R.color;
 public class Cell extends RelativeLayout {
 
 	private int x, y, value;
-	private TextView content;
-	private Handler handler;
+    private Handler handler;
 
 	// action parameter
 	private int moveX, moveY;
@@ -38,10 +37,10 @@ public class Cell extends RelativeLayout {
 		this.value = value;
 		this.handler = handler;
 
-		content = new TextView(context);
+        TextView content = new TextView(context);
 		content.setText("" + value);
 		content.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.MATCH_PARENT));
+                LayoutParams.MATCH_PARENT));
 
 		int size = getDimen(R.dimen.cell_size);
 		LayoutParams params = new LayoutParams(size, size);

@@ -1,6 +1,5 @@
 package dawnwords.game2048;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,8 +18,7 @@ public class MainActivity extends Activity {
 	public static final int ACTION_END = 1;
 	public static final int SHOW_END = 2;
 	public static final int CALCULATE_END = 3;
-
-	private static final int BOARD_SIZE = 4;
+	public static final int BOARD_SIZE = 4;
 
 	private final Handler handler = new Handler() {
 		private List<Cell> cellList, updatedList;
@@ -43,11 +41,11 @@ public class MainActivity extends Activity {
 						}
 
 						System.out.printf("Merged %s\n", c);
-						warpper.removeView(c);
+						wrapper.removeView(c);
 						if (!exists) {
 							c = new Cell(MainActivity.this, c.moveX(),
 									c.moveY(), c.value() * 2, this);
-							warpper.addView(c);
+							wrapper.addView(c);
 							c.show();
 							updatedList.add(c);
 						}
@@ -86,15 +84,14 @@ public class MainActivity extends Activity {
 	};
 
 	private Cell[][] board;
-
-	private RelativeLayout warpper;
+	private RelativeLayout wrapper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		warpper = (RelativeLayout) findViewById(R.id.wrapper);
+		wrapper = (RelativeLayout) findViewById(R.id.wrapper);
 
 		final int[][] cells = { { 8, 0, 8, 8 }, { 8, 8, 0, 8 }, { 8, 0, 0, 8 },
 				{ 8, 0, 0, 8 } };
@@ -103,7 +100,7 @@ public class MainActivity extends Activity {
 			for (int y = 0; y < BOARD_SIZE; y++) {
 				if (cells[x][y] != 0) {
 					board[x][y] = new Cell(this, x, y, cells[x][y], handler);
-					warpper.addView(board[x][y]);
+					wrapper.addView(board[x][y]);
 					board[x][y].show();
 				}
 			}
