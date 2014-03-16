@@ -10,9 +10,11 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
-import dawnwords.game2048.core.CalculateThread;
+import dawnwords.game2048.core.CalculateMoveThread;
 import dawnwords.game2048.core.Direction;
+import dawnwords.game2048.core.JudgeGameOverThread;
 import dawnwords.game2048.view.Cell;
+import dawnwords.game2048.view.ResultView;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -23,11 +25,16 @@ public class MainActivity extends Activity {
     public static final int SHOW_END = 2;
     public static final int CALCULATE_END = 3;
     public static final int GENERATE_CELL = 4;
+    public static final int WIN = 5;
+    public static final int LOSE = 6;
+    public static final int RESTART = 7;
     public static final int BOARD_SIZE = 4;
-    public static final String DEBUG_TAG = "Game2048:";
+    public static final int WIN_RESULT = 2048;
 
     private Cell[][] board;
     private RelativeLayout wrapper;
+    private ResultView result;
+    private boolean isGameEnd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +61,14 @@ public class MainActivity extends Activity {
             }
         });
 
+        result = (ResultView) findViewById(R.id.result);
         wrapper = (RelativeLayout) findViewById(R.id.wrapper);
         wrapper.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent e) {
-                detector.onTouchEvent(e);
+                if (!isGameEnd) {
+                    detector.onTouchEvent(e);
+                }
                 return true;
             }
         });
@@ -67,9 +77,11 @@ public class MainActivity extends Activity {
     }
 
     private void startGame() {
+        isGameEnd = false;
         wrapper.removeAllViews();
+        result.reset();
         board = new Cell[BOARD_SIZE][BOARD_SIZE];
-        handler.sendEmptyMessage(GENERATE_CELL);
+        handler.sendEmptyMessage(RESTART);
     }
 
     public void restart(View v) {
@@ -77,7 +89,7 @@ public class MainActivity extends Activity {
     }
 
     private void calculateMerge(Direction direction) {
-        new CalculateThread(board, direction, handler).start();
+        new CalculateMoveThread(board, direction, handler).start();
     }
 
     private final Handler handler = new Handler() {
@@ -103,10 +115,28 @@ public class MainActivity extends Activity {
                     case GENERATE_CELL:
                         generateCell();
                         break;
+                    case WIN:
+                        isGameEnd = true;
+                        result.win();
+                        break;
+                    case LOSE:
+                        isGameEnd = true;
+                        result.lose();
+                        break;
+                    case RESTART:
+                        restart();
+                        break;
                     default:
                         break;
                 }
             }
+        }
+
+        private void restart() {
+            cellList = null;
+            updatedList = null;
+            hasMove = 0;
+            generateCell();
         }
 
         private void generateCell() {
@@ -119,6 +149,9 @@ public class MainActivity extends Activity {
                         board[i][j] = new Cell(MainActivity.this, i, j, value, this);
                         wrapper.addView(board[i][j]);
                         board[i][j].show();
+                        if (availableCount == 1) {
+                            new JudgeGameOverThread(board, this).start();
+                        }
                     }
                 }
             }
@@ -146,30 +179,35 @@ public class MainActivity extends Activity {
                     }
                 }
 
-                Log.i(DEBUG_TAG + "Merge", c.toString());
                 wrapper.removeView(c);
                 if (!exists) {
-                    c = new Cell(MainActivity.this, c.moveX(),
-                            c.moveY(), c.value() * 2, this);
+                    c = new Cell(MainActivity.this, c.moveX(), c.moveY(), c.value() * 2, this);
                     wrapper.addView(c);
                     c.show();
                     updatedList.add(c);
                 }
             } else {
-                Log.i(DEBUG_TAG + "Move", c.toString());
                 c.updatePosition(c.moveX(), c.moveY());
                 updatedList.add(c);
             }
 
             if (cellList.size() == 0) {
                 board = new Cell[BOARD_SIZE][BOARD_SIZE];
+                int maxValue = 0;
                 for (Cell cell : updatedList) {
                     board[cell.x()][cell.y()] = cell;
+                    if (cell.value() > maxValue) {
+                        maxValue = cell.value();
+                    }
                 }
-                if (hasMove > 0) {
+
+                if (maxValue >= WIN_RESULT) {
+                    sendEmptyMessage(WIN);
+                } else if (hasMove > 0) {
                     sendEmptyMessage(GENERATE_CELL);
                 }
             }
         }
     };
 }
+

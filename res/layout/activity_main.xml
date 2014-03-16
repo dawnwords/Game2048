@@ -8,15 +8,21 @@
     <FrameLayout android:layout_width="@dimen/board_size"
                  android:layout_height="@dimen/board_size"
                  android:layout_centerInParent="true">
-        <dawnwords.game2048.view.BackgroundView android:layout_width="match_parent"
-                                                android:layout_height="match_parent"/>
+        <dawnwords.game2048.view.BackgroundView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
 
         <RelativeLayout
                 android:id="@+id/wrapper"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
+                android:layout_height="match_parent"/>
+
+        <dawnwords.game2048.view.ResultView
+                android:id="@+id/result"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
     </FrameLayout>
 
 
@@ -30,30 +36,8 @@
         <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="up"
-                android:text="↑"/>
-
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="down"
-                android:text="↓"/>
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="right"
-                android:text="→"/>
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="left"
-                android:text="←"/>
-
-        <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:onClick="restart"
-                android:text="restart"/>
+                android:text="@string/restart"/>
 
     </LinearLayout>
 

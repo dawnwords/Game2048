@@ -14,9 +14,13 @@
     <color name="bg_2048">#edc22e</color>
 
     <color name="font_basic">#776e65</color>
+    <color name="font_win">#ffffff</color>
     <color name="font_merge">#f9f6f2</color>
 
     <color name="frame">#baac9f</color>
     <color name="board_bg">#cbbfb2</color>
+
+    <color name="game_over">#88eee4da</color>
+    <color name="you_win">#88edc22e</color>
 
 </resources>
