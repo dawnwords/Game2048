@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import dawnwords.game2048.core.CalculateThread;
@@ -31,7 +34,34 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final GestureDetector detector = new GestureDetector(this, new SimpleOnGestureListener() {
+            @Override
+            public boolean onFling(MotionEvent e, MotionEvent e2, float v, float v2) {
+                float deltaX = e.getX() - e2.getX();
+                float deltaY = e.getY() - e2.getY();
+                Direction direction;
+                if (deltaX > 0 && deltaX > Math.abs(deltaY)) {
+                    direction = Direction.LEFT;
+                } else if (deltaX < 0 && -deltaX > Math.abs(deltaY)) {
+                    direction = Direction.RIGHT;
+                } else if (deltaY > 0 && deltaY > Math.abs(deltaX)) {
+                    direction = Direction.UP;
+                } else {
+                    direction = Direction.DOWN;
+                }
+                calculateMerge(direction);
+                return false;
+            }
+        });
+
         wrapper = (RelativeLayout) findViewById(R.id.wrapper);
+        wrapper.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent e) {
+                detector.onTouchEvent(e);
+                return true;
+            }
+        });
 
         startGame();
     }
@@ -42,24 +72,8 @@ public class MainActivity extends Activity {
         handler.sendEmptyMessage(GENERATE_CELL);
     }
 
-    public void restart(View v){
+    public void restart(View v) {
         startGame();
-    }
-
-    public void right(View v) {
-        calculateMerge(Direction.RIGHT);
-    }
-
-    public void left(View v) {
-        calculateMerge(Direction.LEFT);
-    }
-
-    public void up(View v) {
-        calculateMerge(Direction.UP);
-    }
-
-    public void down(View v) {
-        calculateMerge(Direction.DOWN);
     }
 
     private void calculateMerge(Direction direction) {
