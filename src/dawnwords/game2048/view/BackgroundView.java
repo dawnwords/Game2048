@@ -18,6 +18,7 @@ public class BackgroundView extends RelativeLayout {
             addLine(i, false);
             addLine(i, true);
         }
+        setBackgroundResource(R.color.board_bg);
     }
 
 
@@ -26,7 +27,7 @@ public class BackgroundView extends RelativeLayout {
         int size = getDimen(R.dimen.cell_size);
 
         View view = new View(getContext());
-        view.setBackgroundColor(getColor(R.color.dark));
+        view.setBackgroundResource(R.color.frame);
         view.setLayoutParams(isVertical ? verticalLayoutParam(i, margin, size) : horizontalLayoutParam(i, margin, size));
         addView(view);
     }

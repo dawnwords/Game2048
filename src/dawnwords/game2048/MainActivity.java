@@ -91,8 +91,7 @@ public class MainActivity extends Activity {
                             for (int j = 0; j < BOARD_SIZE; j++) {
                                 if (board[i][j] == null && randomIndex-- == 0) {
                                     int value = Math.random() < 0.9 ? 2 : 4;
-                                    board[i][j] = new Cell(MainActivity.this, i,
-                                            j, value, this);
+                                    board[i][j] = new Cell(MainActivity.this, i, j, value, this);
                                     wrapper.addView(board[i][j]);
                                     board[i][j].show();
                                 }
