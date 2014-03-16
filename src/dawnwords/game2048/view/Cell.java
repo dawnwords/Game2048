@@ -73,7 +73,7 @@ public class Cell extends RelativeLayout {
     }
 
     public void performAction() {
-        if (shouldMove()) {
+        if (shouldMerge || (x != moveX || y != moveY)) {
             Cell c = new Cell(getContext(), moveX, moveY);
             Animator animator = c.x == this.x ? ObjectAnimator.ofFloat(this,
                     "x", getMarginLeft(), c.getMarginLeft()) : ObjectAnimator
@@ -147,10 +147,6 @@ public class Cell extends RelativeLayout {
             result++;
         }
         return result;
-    }
-
-    private boolean shouldMove() {
-        return shouldMerge || (x != moveX || y != moveY);
     }
 
     private void sendEndMessage(int what) {
