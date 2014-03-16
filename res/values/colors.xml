@@ -8,5 +8,6 @@
     <color name="spring">#0f7</color>
     <color name="cyan">#0ff</color>
     <color name="blue">#00f</color>
+    <color name="dark">#999</color>
 
 </resources>
