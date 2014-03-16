@@ -38,7 +38,7 @@ public class Cell extends RelativeLayout {
         TextView content = new TextView(context);
         content.setText("" + value);
         content.setGravity(Gravity.CENTER);
-        content.setTextSize(getDimen(R.dimen.font_size));
+        content.setTextSize(getDimen(value > 100 ? R.dimen.font_size_half : R.dimen.font_size));
         content.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
                 LayoutParams.MATCH_PARENT));
         content.setTextColor(getColor(value < 8 ? R.color.font_basic : R.color.font_merge));

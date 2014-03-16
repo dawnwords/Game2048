@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="board_size">238dp</dimen>
+    <dimen name="cell_size">52dp</dimen>
+    <dimen name="cell_margin">6dp</dimen>
+    <dimen name="font_size">26dp</dimen>
+    <dimen name="font_size_half">13dp</dimen>
+    <dimen name="message_size">40dp</dimen>
+</resources>
