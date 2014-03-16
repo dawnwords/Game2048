@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
     public static final int CALCULATE_END = 3;
     public static final int GENERATE_CELL = 4;
     public static final int BOARD_SIZE = 4;
-    public static final String DEBUG_TAG = "Game2048";
+    public static final String DEBUG_TAG = "Game2048:";
 
     private Cell[][] board;
     private RelativeLayout wrapper;
@@ -32,8 +32,18 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         wrapper = (RelativeLayout) findViewById(R.id.wrapper);
+
+        startGame();
+    }
+
+    private void startGame() {
+        wrapper.removeAllViews();
         board = new Cell[BOARD_SIZE][BOARD_SIZE];
         handler.sendEmptyMessage(GENERATE_CELL);
+    }
+
+    public void restart(View v){
+        startGame();
     }
 
     public void right(View v) {
@@ -122,7 +132,7 @@ public class MainActivity extends Activity {
                     }
                 }
 
-                Log.i(DEBUG_TAG, "Merge " + c);
+                Log.i(DEBUG_TAG + "Merge", c.toString());
                 wrapper.removeView(c);
                 if (!exists) {
                     c = new Cell(MainActivity.this, c.moveX(),
@@ -132,7 +142,7 @@ public class MainActivity extends Activity {
                     updatedList.add(c);
                 }
             } else {
-                Log.i(DEBUG_TAG, "Move " + c);
+                Log.i(DEBUG_TAG + "Move", c.toString());
                 c.updatePosition(c.moveX(), c.moveY());
                 updatedList.add(c);
             }
